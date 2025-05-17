@@ -21,7 +21,7 @@ export default function Assets({ initialAssets }: AssetsProps) {
     if (previousPageData && previousPageData.data.length === 0) return null;
 
     const offset = pageIndex * PAGE_SIZE;
-    return `${process.env.NEXT_PUBLIC_BASE_URL}/api/assets?limit=${PAGE_SIZE}&offset=${offset}`;
+    return `/api/assets?limit=${PAGE_SIZE}&offset=${offset}`;
   };
 
   const { data, error, size, setSize, isValidating, isLoading } =
