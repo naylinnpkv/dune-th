@@ -1,9 +1,9 @@
 "use client";
 
 import { Asset } from "@/types";
-import { formatLargeNumber, formatUSD } from "@/utils/formatters";
+import AssetsTable from "./AssetsTable";
 import useSWRInfinite from "swr/infinite";
-import { Loader } from "lucide-react";
+import { Loader, Search } from "lucide-react";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -21,13 +21,13 @@ export default function Assets({ initialAssets }: AssetsProps) {
     if (previousPageData && previousPageData.data.length === 0) return null;
 
     const offset = pageIndex * PAGE_SIZE;
-    return `https://rest.coincap.io/v3/assets?limit=${PAGE_SIZE}&offset=${offset}&apiKey=${process.env.NEXT_PUBLIC_COINCAP_API_KEY}`;
+    return `${process.env.NEXT_PUBLIC_BASE_URL}/api/assets?limit=${PAGE_SIZE}&offset=${offset}`;
   };
 
   const { data, error, size, setSize, isValidating, isLoading } =
     useSWRInfinite(getKey, fetcher, {
       fallbackData: [{ data: initialAssets }],
-      refreshInterval: 10000,
+      refreshInterval: 20000,
     });
 
   if (error) return <div>Error: {error.message}</div>;
@@ -35,56 +35,36 @@ export default function Assets({ initialAssets }: AssetsProps) {
   const assets = data ? data.flatMap((page) => page.data) : [];
 
   return (
-    <div className="w-[80%] m-auto mb-6">
-      <table className="min-w-full border-collapse border border-gray-200 bg-gray-50 m-6 rounded-lg">
-        <thead>
-          <tr className="text-left">
-            <th className="p-2 font-bold ">Rank</th>
-            <th className="p-2 font-bold">Name</th>
-            <th className="p-2 font-bold">Price</th>
-            <th className="p-2 font-bold">Market Cap</th>
-            <th className="p-2 font-bold">Volume(24Hr)</th>
-            <th className="p-2 font-bold ">Change(24Hr)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {assets.map((asset: Asset) => (
-            <tr key={asset.id} className="bg-white">
-              <td className="p-2 border-t border-gray-300 text-center">
-                {asset.rank}
-              </td>
-              <td className="p-2 border-t border-gray-300">{asset.name}</td>
-              <td className="p-2 border-t border-gray-300">
-                {formatUSD(asset.priceUsd)}
-              </td>
-              <td className="p-2 border-t border-gray-300">
-                {`$${formatLargeNumber(asset.marketCapUsd)}`}
-              </td>
-              <td className="p-2 border-t border-gray-300">
-                {`$${formatLargeNumber(asset.volumeUsd24Hr)}`}
-              </td>
-              <td className="p-2 border-t border-gray-300">
-                {parseFloat(asset.changePercent24Hr).toFixed(2)}%
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="flex justify-center items-center">
-        {isLoading ? (
-          <div className="animate-spin">
-            <Loader />
-          </div>
-        ) : (
-          <button
-            className="bg-green-500 text-white text-sm p-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            onClick={() => setSize(size + 1)}
-            disabled={isValidating}
-          >
-            {isValidating ? "Updating..." : "View More"}
-          </button>
-        )}
+    <>
+      <div className="w-full flex flex-col items-center mb-6 px-10 justify-center">
+        <div className="relative w-1/4 max-w-sm mt-6 self-start">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <input
+            type="text"
+            placeholder="Search..."
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="w-full flex justify-center">
+          <AssetsTable assets={assets} />
+        </div>
+        <div className="flex justify-center items-center">
+          {isLoading ? (
+            <div className="animate-spin">
+              <Loader />
+            </div>
+          ) : (
+            <button
+              className="bg-green-500 text-white text-sm p-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => setSize(size + 1)}
+              disabled={isValidating}
+            >
+              {isValidating ? "Updating..." : "View More"}
+            </button>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

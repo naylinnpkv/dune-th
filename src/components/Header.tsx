@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="flex justify-between items-center p-4 border-b border-gray-200 border-solid bg-white">
+    <header className="flex justify-between items-center p-4 border-b border-gray-200 bg-white">
       <Link href="/" className="text-2xl font-bold">
         CoinCap
       </Link>
