@@ -11,6 +11,5 @@ export default async function CoinPage({
   );
   const data = await res.json();
   const asset = data.data;
-  console.log(asset);
   return <AssetDetail asset={asset} />;
 }
