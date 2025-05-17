@@ -6,9 +6,7 @@ export default async function CoinPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/coin/${slug}`
-  );
+  const res = await fetch(`${process.env.BASE_URL}/api/coin/${slug}`);
   const data = await res.json();
   const asset = data.data;
   console.log(asset);

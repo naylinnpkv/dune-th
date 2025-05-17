@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await params;
   const res = await fetch(
     `https://rest.coincap.io/v3/assets/${id}?apiKey=${process.env.COINCAP_API_KEY}`
   );
