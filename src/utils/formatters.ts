@@ -1,5 +1,3 @@
-// src/lib/formatters.ts
-
 export function formatLargeNumber(value: string): string {
   const num = parseFloat(value);
 

@@ -17,8 +17,8 @@ npm run test
 
 ## Approach
 
-- I prioritized fulfilling the basic requirements due to limited time for this take-home project.
-- As a bonus, I wrote some tests for the homepage.
+- I prioritized fulfilling the basic requirements as I have limited time for this take-home project.
+- As a bonus feature, I wrote some tests for the homepage.
 - The architecture is simple and straightforward, as the app only contains two pages.
 
 ---
