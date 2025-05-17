@@ -9,16 +9,20 @@ type AssetsTableProps = {
 
 export default function AssetsTable({ assets }: AssetsTableProps) {
   return (
-    <div className="w-full max-w-4xl">
-      <table className="min-w-full border-collapse border border-gray-200 bg-gray-50 m-6 rounded-lg">
+    <div className="w-full overflow-x-auto">
+      <table className="mx-auto min-w-full border-collapse border border-gray-200 bg-gray-50 m-6 rounded-lg">
         <thead>
           <tr className="text-left">
             <th className="p-2 font-bold ">Rank</th>
             <th className="p-2 font-bold">Name</th>
             <th className="p-2 font-bold">Price</th>
-            <th className="p-2 font-bold">Market Cap</th>
-            <th className="p-2 font-bold">Volume(24Hr)</th>
-            <th className="p-2 font-bold ">Change(24Hr)</th>
+            <th className="p-2 font-bold hidden md:table-cell">Market Cap</th>
+            <th className="p-2 font-bold hidden md:table-cell">
+              Volume (24Hr)
+            </th>
+            <th className="p-2 font-bold hidden md:table-cell">
+              Change (24Hr)
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -30,7 +34,7 @@ export default function AssetsTable({ assets }: AssetsTableProps) {
               <td className="p-2 border-t border-gray-300 hover:underline cursor-pointer">
                 <Link
                   href={`/coin/${asset.id}`}
-                  target="_blank" // open in new tab feature is optional
+                  target="_blank"
                   className="flex items-center gap-2"
                 >
                   {asset.name}
@@ -40,13 +44,13 @@ export default function AssetsTable({ assets }: AssetsTableProps) {
               <td className="p-2 border-t border-gray-300">
                 {formatUSD(asset.priceUsd)}
               </td>
-              <td className="p-2 border-t border-gray-300">
+              <td className="p-2 border-t border-gray-300 hidden md:table-cell">
                 {`$${formatLargeNumber(asset.marketCapUsd)}`}
               </td>
-              <td className="p-2 border-t border-gray-300">
+              <td className="p-2 border-t border-gray-300 hidden md:table-cell">
                 {`$${formatLargeNumber(asset.volumeUsd24Hr)}`}
               </td>
-              <td className="p-2 border-t border-gray-300">
+              <td className="p-2 border-t border-gray-300 hidden md:table-cell">
                 {parseFloat(asset.changePercent24Hr).toFixed(2)}%
               </td>
             </tr>
